@@ -220,7 +220,7 @@ const associateRestApiWithUsagePlan = async (serviceName, usagePlan, stage, cred
     }
   });
   if (usagePlan.apiStages.some(s => s.apiId === apiName && s.stage === stage)) {
-    cli.consoleLog(`AddApiKey: ${chalk.yellow(`Rest Api ${apiName} already associated with the usage plan`)}`);
+    //cli.consoleLog(`AddApiKey: ${chalk.yellow(`Rest Api ${apiName} already associated with the usage plan`)}`);
     return;
   }
   const params = {
@@ -239,7 +239,7 @@ const associateRestApiWithUsagePlan = async (serviceName, usagePlan, stage, cred
     region
   });
   await ag.updateUsagePlan(params).promise();
-  cli.consoleLog(`AddApiKey: ${chalk.yellow(`Completed associating rest Api ${apiName} with the usage plan`)}`);
+  //cli.consoleLog(`AddApiKey: ${chalk.yellow(`Completed associating rest Api ${apiName} with the usage plan`)}`);
 };
 
 /**
@@ -316,7 +316,7 @@ const addApiKey = async (serverless, options) => {
           });
         }
       } else {
-        serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Api key ${apiKeyName} already exists, skipping creation.`)}`);
+        //serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Api key ${apiKeyName} already exists, skipping creation.`)}`);
         apiKeyId = apiKey.id;
       }
 
@@ -327,13 +327,13 @@ const addApiKey = async (serverless, options) => {
         await createUsagePlanKey(apiKeyId, usagePlanId, awsCredentials.credentials, region, serverless.cli);
         usagePlan = { id: usagePlanId, apiStages: [] };
       } else {
-        serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Usage plan ${planName} already exists, skipping creation.`)}`);
+        //serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Usage plan ${planName} already exists, skipping creation.`)}`);
         usagePlanId = usagePlan.id;
         const existingKeys = await getUsagePlanKeys(usagePlanId, awsCredentials.credentials, region, serverless.cli);
         if (!existingKeys.some(key => key.id === apiKeyId)) {
           await createUsagePlanKey(apiKeyId, usagePlanId, awsCredentials.credentials, region, serverless.cli);
         } else {
-          serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Usage plan ${planName} already has api key associated with it, skipping association.`)}`);
+          //serverless.cli.consoleLog(`AddApiKey: ${chalk.yellow(`Usage plan ${planName} already has api key associated with it, skipping association.`)}`);
         }
       }
       await associateRestApiWithUsagePlan(serviceName, usagePlan, stage, awsCredentials.credentials, region, serverless.cli);
